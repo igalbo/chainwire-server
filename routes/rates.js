@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
       entry = await ratesArray.save();
     }
 
-    res.json(entry.rates);
+    res.json({ data: entry.rates });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
