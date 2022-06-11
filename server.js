@@ -16,4 +16,4 @@ app.use(express.json());
 const ratesRouter = require("./routes/rates");
 app.use("/rates", ratesRouter);
 
-app.listen(3000, console.log("Backend Connected"));
+app.listen(5000, console.log("Backend Connected"));
