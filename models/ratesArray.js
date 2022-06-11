@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const ratesArraySchema = new mongoose.Schema({
-  startDate: {
-    type: Number,
+  start_date: {
+    type: String,
     required: true,
   },
-  endDate: {
+  days: {
     type: Number,
     required: true,
   },
@@ -14,7 +14,7 @@ const ratesArraySchema = new mongoose.Schema({
     required: true,
     default: "USD",
   },
-  currencies: {
+  currency: {
     type: String,
     required: true,
     default: "EUR",
