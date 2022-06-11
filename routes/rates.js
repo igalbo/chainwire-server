@@ -21,6 +21,12 @@ router.get("/", async (req, res) => {
 
       const rates = await getRates(start_date, days, base_currency, currency);
 
+      if (rates.length != days) {
+        return res
+          .status(500)
+          .json({ message: "Can't fetch data for selected range" });
+      }
+
       const ratesArray = new RatesArray({
         start_date,
         days,

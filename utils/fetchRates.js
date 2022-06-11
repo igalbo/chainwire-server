@@ -52,7 +52,7 @@ const getRates = async (
 
     const index = data.findIndex((item) => item?.date === start_date);
     for (let i = index; i < index + Number(days); i++) {
-      ratesArray.push(data[i]?.value);
+      data[i] && ratesArray.push(data[i].value);
     }
 
     return ratesArray;
