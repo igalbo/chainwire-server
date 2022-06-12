@@ -1,27 +1,6 @@
 const axios = require("axios");
 
-// const currencyUrl = "https://api.currencyapi.com/v3/historical";
-// const apiKey = "2IIZTzDoEhjUAaOgdwFBRfgglha3zcB5coJtIfPZ";
-const jsonBinMasterKey =
-  "$2b$10$q0XlGTZAerViDzQmObR3h..iVQfbdFf63evAbaAHo6k9PDMSopKNS";
-
-// const getRatesApi = (
-//   date = "2022-01-02",
-//   base_currency = "USD",
-//   currencies = "GBP"
-// ) => {
-//   return axios
-//     .get(currencyUrl, {
-//       params: {
-//         apiKey,
-//         date,
-//         base_currency,
-//         currencies,
-//       },
-//     })
-//     .then((res) => console.log(res.data.data[currencies].value))
-//     .catch((err) => console.log(err.message));
-// };
+const jsonBinMasterKey = process.env.JSONBIN_MASTER_KEY;
 
 const getRates = async (
   start_date = new Date("June 14, 2021"),

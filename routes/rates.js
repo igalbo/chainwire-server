@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
         return res.json({ data: ratesSubArray });
       }
 
-      console.log("Selected rqnge was not found in the database, fetching...");
+      console.log("Selected range was not found in the database, fetching...");
 
       const rates = await getRates(start_date, days, base_currency, currency);
 

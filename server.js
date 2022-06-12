@@ -1,9 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
+require("dotenv").config();
 
-const mongoUrl =
-  "mongodb+srv://igal:tLsmpIOzjmWdGUAM@cluster0.wkkk3.mongodb.net/rates?retryWrites=true&w=majority";
+const PORT = process.env.PORT || 3000;
+const mongoUrl = process.env.MONGO_URL;
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -16,4 +17,4 @@ app.use(express.json());
 const ratesRouter = require("./routes/rates");
 app.use("/rates", ratesRouter);
 
-app.listen(5000, console.log("Backend connected"));
+app.listen(PORT, console.log("Backend connected on port", PORT));
