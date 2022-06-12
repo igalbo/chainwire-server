@@ -24,7 +24,7 @@ const jsonBinMasterKey =
 // };
 
 const getRates = async (
-  start_date = "June 14, 2021",
+  start_date = new Date("June 14, 2021"),
   days = 5,
   base_currency = "USD",
   currency = "GBP"
@@ -49,8 +49,13 @@ const getRates = async (
     );
 
     const data = response.data?.record["rates"];
+    const formattedDate = start_date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
 
-    const index = data.findIndex((item) => item?.date === start_date);
+    const index = data.findIndex((item) => item?.date === formattedDate);
     for (let i = index; i < index + Number(days); i++) {
       data[i] && ratesArray.push(data[i].value);
     }

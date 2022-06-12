@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const ratesArraySchema = new mongoose.Schema({
   start_date: {
-    type: String,
+    type: Date,
     required: true,
   },
-  days: {
-    type: Number,
+  end_date: {
+    type: Date,
     required: true,
   },
   base_currency: {

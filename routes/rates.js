@@ -3,13 +3,15 @@ const router = express.Router();
 const RatesArray = require("../models/ratesArray");
 const getRates = require("../utils/fetchRates");
 
-// Find rate
+// Find rates
 router.get("/", async (req, res) => {
-  const { start_date, days, base_currency, currency } = req.headers;
+  const start_date = new Date(req.headers.start_date);
+  const end_date = new Date(req.headers.end_date);
+  const { base_currency, currency } = req.headers;
   try {
     let entry = await RatesArray.findOne({
       start_date,
-      days,
+      end_date,
       base_currency,
       currency,
     });
@@ -17,7 +19,38 @@ router.get("/", async (req, res) => {
     entry && console.log("Entry found in database:\n", entry);
 
     if (!entry) {
-      console.log("Entry does not exist in the database, fetching...");
+      entry = await RatesArray.findOne({
+        start_date: { $lte: start_date },
+        end_date: { $gte: end_date },
+        base_currency,
+        currency,
+      });
+
+      const days =
+        Math.ceil(
+          (end_date.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24)
+        ) + 1;
+
+      if (entry) {
+        console.log(
+          "Found an existing entry in the database that includes the requested range"
+        );
+
+        let ratesSubArray = [];
+
+        const offset = Math.ceil(
+          (start_date.getTime() - entry.start_date.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+
+        for (let i = offset; i < days + offset; i++) {
+          ratesSubArray.push(entry.rates[i]);
+        }
+
+        return res.json({ data: ratesSubArray });
+      }
+
+      console.log("Selected rqnge was not found in the database, fetching...");
 
       const rates = await getRates(start_date, days, base_currency, currency);
 
@@ -29,7 +62,7 @@ router.get("/", async (req, res) => {
 
       const ratesArray = new RatesArray({
         start_date,
-        days,
+        end_date,
         base_currency,
         currency,
         rates,
@@ -44,15 +77,17 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Create rate - in case we want to add rates manually
+// Create rate array - in case we want to add rates manually
 router.post("/", async (req, res) => {
-  const { start_date, days, base_currency, currency } = req.headers;
+  const start_date = new Date(req.headers.start_date);
+  const end_date = new Date(req.headers.end_date);
+  const { base_currency, currency } = req.headers;
   const { rates } = req.body;
 
   try {
     const entry = await RatesArray.find({
-      start_date,
-      days,
+      start_date: { $lte: start_date },
+      end_date: { $gte: end_date },
       base_currency,
       currency,
     });
@@ -64,8 +99,8 @@ router.post("/", async (req, res) => {
       });
     }
     const ratesArray = new RatesArray({
-      start_date,
-      days,
+      start_date: new Date(start_date),
+      end_date: new Date(end_date),
       base_currency,
       currency,
       rates,
