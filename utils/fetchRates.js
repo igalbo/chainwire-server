@@ -12,10 +12,10 @@ const getRates = async (
   const ratesArray = [];
 
   if (base_currency === "EUR" && currency === "USD") {
-    pairAddress = "62a49a2305f31f68b3bd3f12";
+    pairAddress = "62a49a2305f31f68b3bd3f12/1";
   }
   if (base_currency === "USD" && currency === "GBP") {
-    pairAddress = "62a49a3a449a1f382104c836";
+    pairAddress = "62a49a3a449a1f382104c836/4";
   }
   try {
     const response = await axios.get(
